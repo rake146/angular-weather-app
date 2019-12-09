@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { WeatherComponent } from './weather-component.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -10,7 +12,10 @@ import { BrowserModule } from '@angular/platform-browser';
     WeatherComponent
   ],
   imports: [
-    BrowserModule 
+    BrowserModule,
+    NgbPaginationModule,
+    NgbPaginationModule.forRoot(),
+    FormsModule
   ],
   providers: []
 })

@@ -1,12 +1,28 @@
-<table style="width:300px">
-    <tr>
-      <th>City</th>
-      <th>Temp</th>
-      <th>Description</th>
-    </tr>
-    <tr *ngFor="let weatherObject of weatherArray; index as i">
-      <td>{{weatherObject.name}}</td>
-      <td>{{weatherObject.main.temp}}</td>
-      <td>{{weatherObject.weather[0].description}}</td>
-    </tr>
-</table>
+<div class="table-component">
+    <form>
+        <div class="form-group form-inline">
+            City: <input class="form-control ml-2" type="text" name="cityForm" [(ngModel)]="filteredCity" (keyup)="changeFilter()"/>
+        </div>
+    </form>
+    
+    <table style="width:300px" class="table table-striped">
+        <tr>
+          <th name="name" (click)="onSort($event)">City</th>
+          <th name="area" (click)="onSort($event)">Temp</th>
+          <th name="population" (click)="onSort($event)">Description</th>
+        </tr>
+        <tr *ngFor="let weatherObject of filteredArray | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i">
+          <td>{{weatherObject.name}}</td>
+          <td>{{Math.floor(weatherObject.main.temp - 273.15)}}</td>
+          <td>{{weatherObject.weather[0].description}}</td>
+        </tr>
+    </table>
+
+    <ngb-pagination [collectionSize]="filteredArray.length + 1" [(page)]="page" [pageSize]="pageSize" aria-label="Default pagination"></ngb-pagination>
+
+    <select class="custom-select" style="width: auto" [(ngModel)]="pageSize">
+            <option [ngValue]="5">5 items per page</option>
+            <option [ngValue]="10">10 items per page</option>
+            <option [ngValue]="20">20 items per page</option>
+    </select>
+</div>
