@@ -19,5 +19,7 @@ export class WeatherComponent implements OnInit {
       let weatherObj = await res.json();
       this.weatherArray.push(weatherObj);
     }
+
+    console.log(this.weatherArray);
   }
 }

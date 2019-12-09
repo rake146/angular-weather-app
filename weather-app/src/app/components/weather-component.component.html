@@ -1,1 +1,12 @@
-<h1>{{this.title}}</h1>
+<table style="width:300px">
+    <tr>
+      <th>City</th>
+      <th>Temp</th>
+      <th>Description</th>
+    </tr>
+    <tr *ngFor="let weatherObject of weatherArray; index as i">
+      <td>{{weatherObject.name}}</td>
+      <td>{{weatherObject.main.temp}}</td>
+      <td>{{weatherObject.weather[0].description}}</td>
+    </tr>
+</table>
