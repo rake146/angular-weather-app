@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { WeatherChartComponent } from '../weather-chart/weather-chart-component.component';
+
+type ISorting = {
+  sorted: boolean,
+  column: string,
+  orderAscending: boolean
+}
 
 @Component({
   selector: 'weather-component',
@@ -7,22 +13,21 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./weather-component.component.css']
 })
 export class WeatherComponent implements OnInit {
+  @ViewChild(WeatherChartComponent) child:WeatherChartComponent;
+  
   cities:Array<string> = ['London', 'Cambridge', 'Manchester', 'Paris', 'Dubai', 'Tokyo', 'Los Angeles', 'Sydney', 'Honolulu', 'Miami', 'Ely']
+  sorted:ISorting = { sorted: false, column: 'city', orderAscending: true };
   weatherArray = [];
-  filter = new FormControl('');
-  page = 4;
   filteredArray = [];
-  paginatedArray = [];
+  page = 1;
+  pageSize = 5;
   filteredCity = '';
   Math;
-  sorted = {sorted: false, column: 'city', orderAscending: true };
-  pageSize = 5;
 
   async ngOnInit(){
     this.Math = Math;
 
     // https://openweathermap.org/current
-
     var key = '194333f5b09188fbda8c4a3bbfea30b2';
     
     for (let city of this.cities){
@@ -32,6 +37,7 @@ export class WeatherComponent implements OnInit {
     }
 
     this.filteredArray = this.weatherArray;
+    console.log(this.filteredArray);
   }
 
   changeFilter(){
@@ -40,6 +46,7 @@ export class WeatherComponent implements OnInit {
     } else {
       this.filteredArray = this.filteredArray.filter((weatherObj) => weatherObj.name.toLowerCase().includes(this.filteredCity.toLowerCase()));
     }
+    this.child.buildGraph();
   }
 
   onSort(event){
@@ -62,9 +69,8 @@ export class WeatherComponent implements OnInit {
       } else {
         this.filteredArray = this.filteredArray.sort((a, b) => b.main.temp - a.main.temp);
       }
-      console.log("TEMP", this.filteredArray);
     } 
 
+    this.child.buildGraph();
   }
-
 }

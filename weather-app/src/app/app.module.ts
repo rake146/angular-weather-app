@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { WeatherModule } from './components/weather-component.module';
+import { WeatherModule } from './components/weather-component/weather-component.module';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -12,7 +14,9 @@ import { WeatherModule } from './components/weather-component.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    WeatherModule
+    WeatherModule,
+    BrowserAnimationsModule,
+    BrowserModule
   ],
   providers: [],
   bootstrap: [AppComponent]
