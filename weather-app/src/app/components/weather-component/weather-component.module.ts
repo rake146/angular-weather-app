@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { WeatherChartModule } from '../weather-chart/weather-chart-component.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { WeatherChartModule } from '../weather-chart/weather-chart-component.mod
     NgbPaginationModule,
     NgbPaginationModule.forRoot(),
     FormsModule,
-    WeatherChartModule
+    WeatherChartModule,
+    BrowserAnimationsModule
   ],
   providers: []
 })

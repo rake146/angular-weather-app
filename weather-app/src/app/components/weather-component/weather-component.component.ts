@@ -7,6 +7,12 @@ type ISorting = {
   orderAscending: boolean
 }
 
+type IWeather = {
+  city: string,
+  temp: number,
+  desc: string
+}
+
 @Component({
   selector: 'weather-component',
   templateUrl: './weather-component.component.html',
@@ -18,35 +24,36 @@ export class WeatherComponent implements OnInit {
   cities:Array<string> = ['London', 'Cambridge', 'Manchester', 'Paris', 'Dubai', 'Tokyo', 'Los Angeles', 'Sydney', 'Honolulu', 'Miami', 'Ely']
   sorted:ISorting = { sorted: false, column: 'city', orderAscending: true };
   weatherArray = [];
-  filteredArray = [];
+  filteredArray:Array<IWeather> = [];
   page = 1;
   pageSize = 5;
   filteredCity = '';
   Math;
 
-  async ngOnInit(){
+  ngOnInit(){
     this.Math = Math;
+    this.retrieveData();
+  }
 
+  async retrieveData(){
     // https://openweathermap.org/current
     var key = '194333f5b09188fbda8c4a3bbfea30b2';
-    
+        
     for (let city of this.cities){
       let res = await fetch('https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + key); 
       let weatherObj = await res.json();
-      this.weatherArray.push(weatherObj);
+      this.weatherArray.push({city: weatherObj.name, temp: weatherObj.main.temp, desc: weatherObj.weather[0].description});
     }
 
     this.filteredArray = this.weatherArray;
-    console.log(this.filteredArray);
   }
 
   changeFilter(){
     if (this.filteredCity == ''){
       this.filteredArray = this.weatherArray;
     } else {
-      this.filteredArray = this.filteredArray.filter((weatherObj) => weatherObj.name.toLowerCase().includes(this.filteredCity.toLowerCase()));
+      this.filteredArray = this.weatherArray.filter((weatherObj) => weatherObj.city.toLowerCase().includes(this.filteredCity.toLowerCase()));
     }
-    this.child.buildGraph();
   }
 
   onSort(event){
@@ -54,9 +61,9 @@ export class WeatherComponent implements OnInit {
       this.sorted = {sorted: true, column: 'city', orderAscending: !this.sorted.orderAscending};
 
       if (this.sorted.orderAscending == true){
-        this.filteredArray = this.filteredArray.sort((a, b) => a.name > b.name ? 1 : -1);
+        this.filteredArray = this.filteredArray.sort((a, b) => a.city > b.city ? 1 : -1);
       } else {
-        this.filteredArray = this.filteredArray.sort((a, b) => a.name < b.name ? 1 : -1);
+        this.filteredArray = this.filteredArray.sort((a, b) => a.city < b.city ? 1 : -1);
       }
       
     }
@@ -65,9 +72,9 @@ export class WeatherComponent implements OnInit {
       this.sorted = {sorted: true, column: 'temp', orderAscending: !this.sorted.orderAscending};
 
       if (this.sorted.orderAscending == true){
-        this.filteredArray = this.filteredArray.sort((a, b) => a.main.temp - b.main.temp);
+        this.filteredArray = this.filteredArray.sort((a, b) => a.temp - b.temp);
       } else {
-        this.filteredArray = this.filteredArray.sort((a, b) => b.main.temp - a.main.temp);
+        this.filteredArray = this.filteredArray.sort((a, b) => b.temp - a.temp);
       }
     } 
 

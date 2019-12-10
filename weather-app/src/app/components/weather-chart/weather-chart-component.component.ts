@@ -1,12 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+type IWeather = {
+  city: string,
+  temp: number,
+  desc: string
+}
+
 @Component({
   selector: 'weather-chart-component',
   templateUrl: './weather-chart-component.component.html',
   styleUrls: ['./weather-chart-component.component.css']
 })
+
 export class WeatherChartComponent implements OnInit {
-  @Input() filteredArray;
+  @Input() filteredArray:Array<IWeather>;
 
   multi: any[] = [
     {
@@ -34,12 +41,13 @@ export class WeatherChartComponent implements OnInit {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-
   async ngOnInit(){
     this.buildGraph();
   }
 
   buildGraph(){
+    // ngx charts
+
     this.multi = [
       {
         name: 'Temp',
@@ -50,10 +58,10 @@ export class WeatherChartComponent implements OnInit {
     ];
 
     for (let element of this.filteredArray){
-      this.multi[0].series.push({name: element.name, value: element.main.temp - 273.15});
+      this.multi[0].series.push({name: element.city, value: element.temp - 273.15});
     }
 
-    let averageTemp = Math.round(this.filteredArray.reduce((accumulator, currentValue) => accumulator + currentValue.main.temp, 0) / this.filteredArray.length) - 273.15;
+    let averageTemp = Math.round(this.filteredArray.reduce((accumulator, currentValue) => accumulator + currentValue.temp, 0) / this.filteredArray.length) - 273.15;
 
     this.multi.push({
       name: 'Average',
@@ -63,8 +71,7 @@ export class WeatherChartComponent implements OnInit {
     });
 
     for (let element of this.filteredArray){
-      this.multi[1].series.push({name: element.name, value: averageTemp});
+      this.multi[1].series.push({name: element.city, value: averageTemp});
     }
   }
-
 }

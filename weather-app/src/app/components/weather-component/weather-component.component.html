@@ -11,10 +11,10 @@
           <th name="area" (click)="onSort($event)">Temp</th>
           <th name="population" (click)="onSort($event)">Description</th>
         </tr>
-        <tr *ngFor="let weatherObject of filteredArray | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i">
-          <td>{{weatherObject.name}}</td>
-          <td>{{Math.floor(weatherObject.main.temp - 273.15)}}</td>
-          <td>{{weatherObject.weather[0].description}}</td>
+        <tr class="table-row" *ngFor="let weatherObject of filteredArray | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; index as i">
+          <td>{{weatherObject.city}}</td>
+          <td>{{Math.floor(weatherObject.temp - 273.15)}}</td>
+          <td>{{weatherObject.desc}}</td>
         </tr>
     </table>
 
